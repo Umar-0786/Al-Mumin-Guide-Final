@@ -17,11 +17,21 @@ jobs:
 
       - name: Setup and Build
         run: |
+          # 1. Check karein ke files hain ya nahi
+          ls -R
+          
+          # 2. Package file create karein
           npm init -y
+          
+          # 3. Capacitor install karein
           npm install @capacitor/core @capacitor/cli @capacitor/android
+          
+          # 4. Project initialize karein
           npx cap init "Al Mumin Guide" com.gsons.mumin --web-dir .
           npx cap add android || true
           npx cap sync android
+          
+          # 5. Build start karein
           cd android
           chmod +x gradlew
           ./gradlew bundleRelease
