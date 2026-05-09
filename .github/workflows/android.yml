@@ -17,21 +17,24 @@ jobs:
 
       - name: Setup and Build
         run: |
-          # 1. Check karein ke files hain ya nahi
-          ls -R
+          # 1. Aik temporary 'www' folder banayein
+          mkdir -p www
           
-          # 2. Package file create karein
+          # 2. Apni files ko 'www' folder mein copy karein
+          cp index.html www/ 2>/dev/null || true
+          cp style.css www/ 2>/dev/null || true
+          cp script.js www/ 2>/dev/null || true
+          
+          # 3. Project initialize karein
           npm init -y
-          
-          # 3. Capacitor install karein
           npm install @capacitor/core @capacitor/cli @capacitor/android
           
-          # 4. Project initialize karein
-          npx cap init "Al Mumin Guide" com.gsons.mumin --web-dir .
+          # 4. Capacitor ko 'www' folder ka rasta dikhayein
+          npx cap init "Al Mumin Guide" com.gsons.mumin --web-dir www
           npx cap add android || true
           npx cap sync android
           
-          # 5. Build start karein
+          # 5. Final Android Build
           cd android
           chmod +x gradlew
           ./gradlew bundleRelease
@@ -39,5 +42,5 @@ jobs:
       - name: Upload .aab Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-bundle
-          path: "**/app-release.aab"
+          name: Al-Mumin-Guide-Bundle
+          path: "**/*.aab"
